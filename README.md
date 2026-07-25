@@ -80,11 +80,6 @@ pipelines, and long tails of niche tools are intentionally deferred - see
 [Roadmap](#roadmap). V1.0 is meant to feel *complete* at a small scope, not
 *incomplete* at a large one.
 
-## Screenshots
-
-_(Add screenshots of the search bar and each category to `docs/screenshots/`
-and reference them here once the first build is captured.)_
-
 ## Installation
 
 ### Windows
