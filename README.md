@@ -294,7 +294,7 @@ redistribute, including commercially, with attribution.
 
 ## Credits
 
-- Built by [DuckzPY](https://github.com/DuckzPY)
+- Built by [DuckzPY](https://github.com/DuckzPY) and [1stla](https://github.com/1stlla) 
 - UI powered by [Avalonia](https://avaloniaui.net/)
 - MVVM plumbing via [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet)
-- Spiritual predecessor: [rose-fg](https://github.com/DuckzPY/rose-fg)
+- Predecessor: [rose-fg](https://github.com/DuckzPY/rose-fg)
