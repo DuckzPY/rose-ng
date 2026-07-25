@@ -12,7 +12,6 @@ desktop experience on both major desktop OSes.
 
 - [Overview](#overview)
 - [Features](#features)
-- [Screenshots](#screenshots)
 - [Installation](#installation)
 - [Building from source](#building-from-source)
 - [Usage](#usage)
