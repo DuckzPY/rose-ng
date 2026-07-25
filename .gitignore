@@ -1,0 +1,9 @@
+bin/
+obj/
+.vs/
+.vscode/
+*.user
+publish/
+
+# If you ever keep a scratch file with the plaintext invite while rotating it, never commit it
+invite-plaintext.txt
