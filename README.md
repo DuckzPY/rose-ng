@@ -80,10 +80,17 @@ Views/                one UserControl + tab set per category
 
 ## Known stubs/fixes
 
-- **Breach check** (OSINT) — needs a HaveIBeenPwned API key.
-- **MAC vendor lookup** (Network) — needs a bundled IEEE OUI database.
-- **ARP sweep** (Network) — currently reads the OS ARP cache; a full active
-  sweep needs a ping-then-read-cache implementation per platform.
+- **Breach check** (OSINT) — implemented against the HaveIBeenPwned v3 API.
+  Requires your own paid API key (https://haveibeenpwned.com/API/Key), entered
+  once in the tool and persisted locally in `settings.json`.
+- **MAC vendor lookup** (Network) — implemented against a bundled curated
+  subset of common IEEE OUI vendor prefixes. Not exhaustive; for full
+  registry coverage, drop the official `oui.csv` (from
+  https://standards-oui.ieee.org/oui/oui.csv) next to `settings.json` in the
+  app's data folder as `oui-extra.csv`.
+- **ARP sweep** (Network) — implemented as a ping sweep of the local /24
+  followed by a read of the OS ARP cache (`arp -a` on Windows/macOS,
+  `ip neigh` on Linux).
 
 ## License / disclaimer
 

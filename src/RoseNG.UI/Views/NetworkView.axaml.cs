@@ -24,8 +24,11 @@ namespace RoseNG.UI.Views
             ScanOutput.Text = await NetworkService.PortScanAsync(ScanHostInput.Text ?? "", start, end);
         }
 
-        private void ArpBtn_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-            => ArpOutput.Text = NetworkService.ArpSweepLocalCache();
+        private async void ArpBtn_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            ArpOutput.Text = "Sweeping local subnet, this can take a few seconds...";
+            ArpOutput.Text = await NetworkService.ArpSweepAsync();
+        }
 
         private void MacBtn_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
             => MacOutput.Text = NetworkService.MacVendorLookup(MacInput.Text ?? "");

@@ -76,6 +76,14 @@
           <TextBox Name="WaybackOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="220" FontFamily="monospace"/>
         </StackPanel>
       </TabItem>
+      <TabItem Header="Breach check">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="BreachEmailInput" Watermark="someone@example.com"/>
+          <TextBox Name="BreachApiKeyInput" Watermark="HaveIBeenPwned API key (saved locally after first use)" PasswordChar="•"/>
+          <Button Name="BreachBtn" Content="Lookup" Click="BreachBtn_Click"/>
+          <TextBox Name="BreachOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="220" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
     </TabControl>
     </Border>
   </StackPanel>

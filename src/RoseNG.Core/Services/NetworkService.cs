@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.NetworkInformation;
@@ -84,24 +85,136 @@ namespace RoseNG.Core.Services
             return sb.ToString();
         }
 
-        // ARP table read (Windows: arp -a semantics via NetworkInterface is limited;
-        // this reads the local ARP cache exposed by the OS where available)
-        public static string ArpSweepLocalCache()
+        // Active ARP sweep: ping every host on the local /24 to populate the OS's ARP
+        // cache, then read that cache back via the platform-native tool (there's no
+        // cross-platform managed API for the ARP table, so this shells out).
+        public static async Task<string> ArpSweepAsync(bool activeSweep = true)
         {
             var sb = new StringBuilder();
-            sb.AppendLine("Local ARP cache (requires OS-level arp table access):");
-            sb.AppendLine("Run alongside a subnet ping sweep to populate entries, then read via 'arp -a' (Win) or 'ip neigh' (Linux).");
+
+            if (activeSweep)
+            {
+                var subnet = GetLocalSubnetPrefix();
+                if (subnet != null)
+                {
+                    sb.AppendLine($"Pinging {subnet}.0/24 to populate the ARP cache...");
+                    var pingTasks = new List<Task>();
+                    for (int host = 1; host <= 254; host++)
+                    {
+                        var target = $"{subnet}.{host}";
+                        pingTasks.Add(Task.Run(async () =>
+                        {
+                            try
+                            {
+                                using var ping = new Ping();
+                                await ping.SendPingAsync(target, 300);
+                            }
+                            catch { /* unreachable/filtered hosts are expected */ }
+                        }));
+                    }
+                    await Task.WhenAll(pingTasks);
+                    sb.AppendLine("Sweep complete.");
+                }
+                else
+                {
+                    sb.AppendLine("Could not determine local IPv4 subnet; skipping active sweep, reading cache only.");
+                }
+                sb.AppendLine();
+            }
+
+            sb.AppendLine("ARP cache:");
+            sb.AppendLine(await ReadOsArpCacheAsync());
             return sb.ToString();
+        }
+
+        private static string? GetLocalSubnetPrefix()
+        {
+            foreach (var nic in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                if (nic.OperationalStatus != OperationalStatus.Up) continue;
+                if (nic.NetworkInterfaceType == NetworkInterfaceType.Loopback) continue;
+
+                foreach (var addr in nic.GetIPProperties().UnicastAddresses)
+                {
+                    if (addr.Address.AddressFamily != AddressFamily.InterNetwork) continue;
+                    var b = addr.Address.GetAddressBytes();
+                    if (b[0] == 127) continue;
+                    return $"{b[0]}.{b[1]}.{b[2]}";
+                }
+            }
+            return null;
+        }
+
+        private static async Task<string> ReadOsArpCacheAsync()
+        {
+            string fileName;
+            string arguments;
+
+            if (OperatingSystem.IsWindows())
+            {
+                fileName = "arp";
+                arguments = "-a";
+            }
+            else if (OperatingSystem.IsMacOS())
+            {
+                fileName = "arp";
+                arguments = "-a";
+            }
+            else if (OperatingSystem.IsLinux())
+            {
+                fileName = "ip";
+                arguments = "neigh";
+            }
+            else
+            {
+                return "Unsupported platform for ARP cache reading.";
+            }
+
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = fileName,
+                    Arguments = arguments,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                };
+
+                using var proc = Process.Start(psi);
+                if (proc == null) return $"Failed to start '{fileName} {arguments}'.";
+
+                string output = await proc.StandardOutput.ReadToEndAsync();
+                string error = await proc.StandardError.ReadToEndAsync();
+                await proc.WaitForExitAsync();
+
+                if (string.IsNullOrWhiteSpace(output))
+                    return string.IsNullOrWhiteSpace(error) ? "(empty ARP cache)" : $"'{fileName} {arguments}' failed: {error.Trim()}";
+
+                return output.Trim();
+            }
+            catch (Exception ex)
+            {
+                return $"Failed to read ARP cache: {ex.Message}\n" +
+                       $"('{fileName} {arguments}' must be available on PATH.)";
+            }
         }
 
         public static string MacVendorLookup(string mac)
         {
-            // OUI is first 3 octets; a real implementation should ship/download
-            // the IEEE OUI database. Placeholder structure shown here.
             var cleaned = mac.Replace(":", "").Replace("-", "").ToUpperInvariant();
             if (cleaned.Length < 6) return "Invalid MAC address";
+
             var oui = cleaned.Substring(0, 6);
-            return $"OUI: {oui}\nVendor lookup requires the IEEE OUI database (oui.txt) bundled with the app.";
+            var vendor = OuiDatabase.Lookup(oui);
+
+            if (vendor != null)
+                return $"OUI: {oui}\nVendor: {vendor}";
+
+            return $"OUI: {oui}\nVendor: unknown (not in the bundled {OuiDatabase.EntryCount}-entry OUI subset)\n" +
+                   $"For full IEEE coverage, download oui.csv from https://standards-oui.ieee.org/oui/oui.csv " +
+                   $"and place it at:\n{OuiDatabase.ExtraDatabasePath}";
         }
         public static async Task SendWakeOnLanAsync(string macAddress)
         {

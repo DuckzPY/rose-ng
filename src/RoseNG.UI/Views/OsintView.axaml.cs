@@ -8,6 +8,7 @@ namespace RoseNG.UI.Views
         public OsintView()
         {
             InitializeComponent();
+            BreachApiKeyInput.Text = RoseNG.Core.Services.SettingsService.Current.HibpApiKey;
         }
 
         private async void WhoisBtn_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -39,5 +40,14 @@ namespace RoseNG.UI.Views
 
         private async void WaybackBtn_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
             => WaybackOutput.Text = await OsintService.WaybackCheckAsync(WaybackInput.Text ?? "");
+
+        private async void BreachBtn_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            var key = BreachApiKeyInput.Text ?? "";
+            if (!string.IsNullOrWhiteSpace(key))
+                RoseNG.Core.Services.SettingsService.SetHibpApiKey(key);
+
+            BreachOutput.Text = await OsintService.BreachCheckAsync(BreachEmailInput.Text ?? "", key);
+        }
     }
 }

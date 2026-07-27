@@ -32,8 +32,8 @@
       </TabItem>
       <TabItem Header="ARP sweep">
         <StackPanel Spacing="8" Margin="8">
-          <Button Content="Read local ARP cache" Click="ArpBtn_Click"/>
-          <TextBox Name="ArpOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="100" FontFamily="monospace"/>
+          <Button Content="Sweep subnet + read ARP cache" Click="ArpBtn_Click"/>
+          <TextBox Name="ArpOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="220" FontFamily="monospace"/>
         </StackPanel>
       </TabItem>
       <TabItem Header="MAC lookup">

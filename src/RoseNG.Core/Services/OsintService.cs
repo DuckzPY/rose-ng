@@ -136,12 +136,46 @@ namespace RoseNG.Core.Services
             }
         }
 
-        // Uses HaveIBeenPwned-style breach check placeholder - requires API key for real use
-        public static Task<string> BreachCheckAsync(string email)
+        // Uses the HaveIBeenPwned v3 API. Requires a paid API key (https://haveibeenpwned.com/API/Key).
+        // The key is passed in from the UI and persisted via SettingsService so it only needs to be entered once.
+        public static async Task<string> BreachCheckAsync(string email, string? apiKey = null)
         {
-            return Task.FromResult(
-                "Breach checking requires a HaveIBeenPwned API key.\n" +
-                "Add your key in Settings to enable this tool.");
+            apiKey = string.IsNullOrWhiteSpace(apiKey) ? SettingsService.Current.HibpApiKey : apiKey;
+
+            if (string.IsNullOrWhiteSpace(apiKey))
+                return "Breach checking requires a HaveIBeenPwned API key.\n" +
+                       "Enter your key above and click Lookup - it will be saved locally for next time.\n" +
+                       "Get a key at https://haveibeenpwned.com/API/Key";
+
+            if (string.IsNullOrWhiteSpace(email))
+                return "Enter an email address to check.";
+
+            using var request = new HttpRequestMessage(
+                HttpMethod.Get,
+                $"https://haveibeenpwned.com/api/v3/breachedaccount/{Uri.EscapeDataString(email)}?truncateResponse=false");
+            request.Headers.Add("hibp-api-key", apiKey);
+            request.Headers.Add("User-Agent", "RoseNg-OSINT-Tool");
+
+            try
+            {
+                using var resp = await Http.SendAsync(request);
+
+                if (resp.StatusCode == HttpStatusCode.NotFound)
+                    return $"No breaches found for {email}.";
+                if (resp.StatusCode == HttpStatusCode.Unauthorized)
+                    return "HaveIBeenPwned rejected the API key (invalid or expired).";
+                if ((int)resp.StatusCode == 429)
+                    return "Rate limited by HaveIBeenPwned. Wait a bit and try again.";
+                if (!resp.IsSuccessStatusCode)
+                    return $"Breach check failed: {(int)resp.StatusCode} {resp.StatusCode}";
+
+                var json = await resp.Content.ReadAsStringAsync();
+                return JsonFormat.Pretty(json);
+            }
+            catch (Exception ex)
+            {
+                return $"Breach check failed: {ex.Message}";
+            }
         }
 
         public static async Task<string> UsernameSearchAsync(string username)
