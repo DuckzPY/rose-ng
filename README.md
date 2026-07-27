@@ -1,8 +1,7 @@
 # rose-ng
 
-A cross-platform (Windows + Linux) desktop multi-tool for OSINT, Discord, and network
-utilities. Built as a focused V1.0 MVP: a small set of tools done properly, on a
-foundation designed to grow, rather than a sprawling toolbox done poorly.
+A offline-first hacking/OSINT toolbox desktop app, built with Avalonia (.NET).
+Everything is local || no telemetry, no accounts, rolling release.
 
 rose-ng is the C#/.NET rewrite of [rose-fg](https://github.com/DuckzPY/rose-fg)
 (the original CustomTkinter/Python toolkit), aimed at a native, single-binary
@@ -27,57 +26,65 @@ desktop experience on both major desktop OSes.
 ## Overview
 
 rose-ng is one desktop app, one search bar, and a growing catalog of small,
-reliable tools grouped into three categories for V1.0: **OSINT**, **Discord**,
+reliable tools grouped into three categories for V2.0: **OSINT**, **Discord**,
 and **Network**. Every tool follows the same shape - pick it from the search
 bar, give it one input, hit Run, read the output - so the app stays simple to
 use even as more tools are added later.
 
-**Design goals for V1.0:**
-
-- A small, *working* set of tools rather than a large set of half-finished ones
-- A clean separation between UI (`RoseNG.UI`) and logic (`RoseNG.Core`), so a
-  new tool is normally just one new file + one catalog entry - no UI rewrite
-- Native look and feel on both Windows and Linux from one codebase
-- A dark theme that doesn't feel like a rebranded default template
-- No telemetry, no accounts, no cloud dependency - it's a local utility
-
 ## Features
 
 ### OSINT
-- **WHOIS lookup** - registrar, dates, and referral-chain resolution (via raw RFC 3912 socket, no third-party API)
-- **DNS lookup** - A/AAAA record resolution
-- **Reverse DNS** - IP → hostname
-- **HTTP header inspection** - see exactly what headers a server returns
-- **TLS certificate viewer** - subject, issuer, validity window, thumbprint
-- **Hash generation** - MD5 / SHA-1 / SHA-256 / SHA-512 for text or files
-- **Hash verification** - compare a computed hash against an expected one
-- **File metadata viewer** - filesystem metadata, plus PNG/JPEG dimensions
-
-### Discord *(all features comply with Discord's Terms of Service)*
-- **Webhook testing** - validate a webhook URL **you own** before using it
-- **Webhook message sending** - post content/embeds to your own webhook
-- **Snowflake decoder** - turn any Discord ID into its creation timestamp
-- **Timestamp generator** - build `<t:unix:format>` markdown timestamps
-- **Markdown formatting helpers** - bold/italic/underline/strikethrough/spoiler/code block/quote
-- **Embed builder** *(backend model included; full visual builder UI ships in v1.1 - see [Roadmap](#roadmap))*
-
-> rose-ng never scrapes, brute-forces, or discovers webhooks/tokens that
-> don't belong to the user. Every Discord feature operates on data you
-> explicitly provide.
+- WHOIS lookup (raw TCP query, port 43)
+- DNS lookup (A / AAAA / MX / TXT / NS / CNAME)
+- SSL/TLS certificate inspector
+- Subnet / CIDR calculator
+- Reverse IP (PTR) lookup
+- IP geolocation
+- ASN lookup
+- robots.txt fetcher
+- Wayback Machine snapshot check
+- Username search across platforms (GitHub, X, Instagram, Reddit, TikTok)
 
 ### Network
-- **Ping** - ICMP echo with latency/loss summary
-- **Traceroute** - TTL-incrementing route trace (implemented in-app so it behaves identically on Windows and Linux, rather than shelling out to `tracert`/`traceroute`)
-- **Port scan** - common-port TCP scan, **for hosts you're authorised to test**
-- **Connection test** - quick TCP reachability + latency check
-- **Local network info** - active interfaces and assigned addresses
-- **Public IP lookup** - your current externally-visible IP
+- Ping
+- Traceroute
+- Concurrent async port scanner
+- HTTP header / banner grabber
+- Wake-on-LAN packet sender
+- Local network interface info (MAC/IP per adapter)
+- ARP cache reader
 
-### Explicitly out of scope for V1.0
-Plugin marketplaces, cloud sync, AI integrations, scripting/automation
-pipelines, and long tails of niche tools are intentionally deferred - see
-[Roadmap](#roadmap). V1.0 is meant to feel *complete* at a small scope, not
-*incomplete* at a large one.
+### Discord
+- Webhook sender (plain messages)
+- Embed builder (title/description/color via webhook)
+- Snowflake (ID) → timestamp decoder
+- Bot token format validator
+- Own-bot-token API check (`/users/@me`)
+- Invite resolver
+- Webhook info fetch
+- Own-guild emoji list
+- Own-guild role list
+- Own-guild audit log fetch
+
+> Anything Discord-related here is scoped to your own bot/server/webhook. Tools
+> that could be used to spam, nuke, or abuse servers you don't control aren't
+> included on purpose.
+
+### Security
+- Cryptographically-secure password generator (configurable length/symbols/digits/case)
+- Password strength checker
+- Hash generator (MD5 / SHA1 / SHA256 / SHA512)
+- Hash identifier (by length)
+- Wordlist-based hash cracker
+- File integrity checker (checksum compare)
+
+### Encoding
+- Base64 encode/decode
+- Hex ↔ ASCII/binary
+- JWT decoder (header + payload, no signature verification)
+- URL encode/decode
+- ROT13
+- XOR cipher (encrypt/decrypt with a key)
 
 ## Installation
 
@@ -297,3 +304,7 @@ redistribute, including commercially, with attribution.
 - UI powered by [Avalonia](https://avaloniaui.net/)
 - MVVM plumbing via [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet)
 - Predecessor: [rose-fg](https://github.com/DuckzPY/rose-fg)
+
+## Disclaimer (Not that this will stop you but I have to include it)
+For your own systems, bots, and servers, or with explicit authorisation. Not
+a substitute for actual authorisation to test something you don't own.
