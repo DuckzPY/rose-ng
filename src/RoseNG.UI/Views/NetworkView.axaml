@@ -1,0 +1,69 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="RoseNG.UI.Views.NetworkView">
+  <StackPanel Spacing="16">
+    <TextBlock Text="Network" Classes="pageTitle"/>
+    <Border CornerRadius="16" Background="#17141A" BorderBrush="#242028" BorderThickness="1" Padding="4">
+      <TabControl>
+      <TabItem Header="Ping">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="PingInput" Watermark="8.8.8.8 or example.com"/>
+          <Button Content="Ping" Click="PingBtn_Click"/>
+          <TextBox Name="PingOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="100" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Traceroute">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="TraceInput" Watermark="example.com"/>
+          <Button Content="Trace" Click="TraceBtn_Click"/>
+          <TextBox Name="TraceOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="220" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Port scan">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="ScanHostInput" Watermark="host"/>
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <TextBox Name="ScanStartInput" Watermark="start port" Width="120" Text="1"/>
+            <TextBox Name="ScanEndInput" Watermark="end port" Width="120" Text="1024"/>
+          </StackPanel>
+          <Button Content="Scan" Click="ScanBtn_Click"/>
+          <TextBox Name="ScanOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="220" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="ARP sweep">
+        <StackPanel Spacing="8" Margin="8">
+          <Button Content="Read local ARP cache" Click="ArpBtn_Click"/>
+          <TextBox Name="ArpOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="100" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="MAC lookup">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="MacInput" Watermark="00:1A:2B:3C:4D:5E"/>
+          <Button Content="Lookup vendor" Click="MacBtn_Click"/>
+          <TextBox Name="MacOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="100" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="HTTP headers">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="HeaderUrlInput" Watermark="example.com or https://example.com"/>
+          <Button Content="Grab headers" Click="HeaderBtn_Click"/>
+          <TextBox Name="HeaderOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="220" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Wake-on-LAN">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="WolInput" Watermark="00:1A:2B:3C:4D:5E"/>
+          <Button Content="Send magic packet" Click="WolBtn_Click"/>
+          <TextBox Name="WolOutput" IsReadOnly="True"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Interfaces">
+        <StackPanel Spacing="8" Margin="8">
+          <Button Content="List local interfaces" Click="IfaceBtn_Click"/>
+          <TextBox Name="IfaceOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="220" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+    </TabControl>
+    </Border>
+  </StackPanel>
+</UserControl>

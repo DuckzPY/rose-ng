@@ -2,10 +2,116 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="RoseNG.UI.App"
              RequestedThemeVariant="Dark">
+  <Application.Resources>
+    <!-- Fluent theme draws the keyboard focus-visible outline using these two
+         brushes (a black+white alternating stroke for contrast). Making both
+         transparent kills the stray line everywhere, regardless of which
+         control/template part is drawing it. -->
+    <SolidColorBrush x:Key="FocusVisualWhiteStrokeBrush">Transparent</SolidColorBrush>
+    <SolidColorBrush x:Key="FocusVisualBlackStrokeBrush">Transparent</SolidColorBrush>
+    <SolidColorBrush x:Key="SystemControlFocusVisualBorderBrush">Transparent</SolidColorBrush>
+    <SolidColorBrush x:Key="TextControlFocusVisualBorderBrush">Transparent</SolidColorBrush>
+  </Application.Resources>
 
-    <Application.Styles>
-        <FluentTheme />
-        <StyleInclude Source="avares://RoseNG/Styles/Theme.axaml" />
-    </Application.Styles>
+  <Application.Styles>
+    <FluentTheme />
 
+    <!-- Global text -->
+    <Style Selector="TextBlock">
+      <Setter Property="Foreground" Value="#E8E3E6"/>
+    </Style>
+    <Style Selector="TextBlock.pageTitle">
+      <Setter Property="FontSize" Value="22"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="Margin" Value="0,0,0,4"/>
+    </Style>
+
+    <!-- Inputs -->
+    <Style Selector="TextBox">
+      <Setter Property="Background" Value="#17141A"/>
+      <Setter Property="Foreground" Value="#E8E3E6"/>
+      <Setter Property="BorderBrush" Value="#2A242C"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="CornerRadius" Value="10"/>
+      <Setter Property="Padding" Value="12,8"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="CaretBrush" Value="#E0616F"/>
+      <Setter Property="Transitions">
+        <Transitions>
+          <BrushTransition Property="BorderBrush" Duration="0:0:0.15"/>
+        </Transitions>
+      </Setter>
+    </Style>
+    <Style Selector="TextBox:focus">
+      <Setter Property="BorderBrush" Value="#E0616F"/>
+    </Style>
+
+    <!-- Buttons -->
+    <Style Selector="Button">
+      <Setter Property="Background" Value="#1E1A22"/>
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="BorderBrush" Value="#2A242C"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="CornerRadius" Value="10"/>
+      <Setter Property="Padding" Value="16,8"/>
+      <Setter Property="RenderTransform" Value="scale(1)"/>
+      <Setter Property="Transitions">
+        <Transitions>
+          <BrushTransition Property="Background" Duration="0:0:0.12"/>
+          <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.12"/>
+        </Transitions>
+      </Setter>
+    </Style>
+    <Style Selector="Button:pointerover">
+      <Setter Property="Background" Value="#2A2430"/>
+      <Setter Property="RenderTransform" Value="scale(1.015)"/>
+    </Style>
+    <Style Selector="Button:pressed">
+      <Setter Property="RenderTransform" Value="scale(0.98)"/>
+    </Style>
+
+    <!-- Tab control -->
+    <Style Selector="TabControl">
+      <Setter Property="Background" Value="#17141A"/>
+      <Setter Property="Padding" Value="0"/>
+    </Style>
+    <Style Selector="TabItem">
+      <Setter Property="Foreground" Value="#B8AEB4"/>
+      <Setter Property="FontSize" Value="13"/>
+      <Setter Property="Padding" Value="14,10"/>
+      <Setter Property="Transitions">
+        <Transitions>
+          <BrushTransition Property="Foreground" Duration="0:0:0.15"/>
+        </Transitions>
+      </Setter>
+    </Style>
+    <Style Selector="TabItem:selected">
+      <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <!-- Checkboxes / combos -->
+    <Style Selector="ComboBox">
+      <Setter Property="Background" Value="#17141A"/>
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="CornerRadius" Value="10"/>
+    </Style>
+    <Style Selector="CheckBox">
+      <Setter Property="Foreground" Value="#E8E3E6"/>
+    </Style>
+
+    <!-- Scrollviewer -->
+    <Style Selector="ScrollViewer">
+      <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <!-- The keyboard focus ring is drawn by an AdornerLayer overlay via the
+         FocusAdorner attached property (set globally by FluentTheme's own
+         style) - NOT part of any control's own template. That's why
+         targeting /template/ parts never removed it. Setting it to null here
+         (after FluentTheme, so it wins) removes it everywhere, permanently. -->
+    <Style Selector=":is(Control)">
+      <Setter Property="FocusAdorner" Value="{x:Null}"/>
+    </Style>
+  </Application.Styles>
 </Application>

@@ -1,9 +1,27 @@
+## .NET / build output
 bin/
 obj/
-.vs/
-.vscode/
+out/
 *.user
-publish/
+*.suo
 
-# If you ever keep a scratch file with the plaintext invite while rotating it, never commit it
-invite-plaintext.txt
+## Rider / VS / VS Code
+.idea/
+.vs/
+*.swp
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+## OS junk
+.DS_Store
+Thumbs.db
+
+## NuGet
+*.nupkg
+**/packages/*
+!**/packages/build/
+
+## Avalonia previewer cache
+**/.avalonia/

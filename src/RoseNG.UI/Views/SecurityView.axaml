@@ -1,0 +1,77 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="RoseNG.UI.Views.SecurityView">
+  <StackPanel Spacing="16">
+    <TextBlock Text="Security" Classes="pageTitle"/>
+    <Border CornerRadius="16" Background="#17141A" BorderBrush="#242028" BorderThickness="1" Padding="4">
+      <TabControl>
+      <TabItem Header="Password generator">
+        <StackPanel Spacing="8" Margin="8">
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <TextBox Name="PwLengthInput" Width="80" Text="16" Watermark="length"/>
+            <CheckBox Name="PwSymbolsCheck" Content="symbols" IsChecked="True"/>
+            <CheckBox Name="PwDigitsCheck" Content="digits" IsChecked="True"/>
+            <CheckBox Name="PwUpperCheck" Content="uppercase" IsChecked="True"/>
+          </StackPanel>
+          <Button Content="Generate" Click="GenPwBtn_Click"/>
+          <TextBox Name="PwOutput" IsReadOnly="True"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Strength check">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="StrengthInput" Watermark="password to check" PasswordChar="*"/>
+          <Button Content="Check" Click="StrengthBtn_Click"/>
+          <TextBox Name="StrengthOutput" IsReadOnly="True"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Hash generator">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="HashInput" Watermark="text to hash"/>
+          <ComboBox Name="HashAlgoBox" SelectedIndex="2">
+            <ComboBoxItem Content="MD5"/>
+            <ComboBoxItem Content="SHA1"/>
+            <ComboBoxItem Content="SHA256"/>
+            <ComboBoxItem Content="SHA512"/>
+          </ComboBox>
+          <Button Content="Hash" Click="HashBtn_Click"/>
+          <TextBox Name="HashOutput" IsReadOnly="True"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Hash identifier">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="IdHashInput" Watermark="paste a hash"/>
+          <Button Content="Identify" Click="IdHashBtn_Click"/>
+          <TextBox Name="IdHashOutput" IsReadOnly="True"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Hash cracker">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="CrackHashInput" Watermark="target hash"/>
+          <ComboBox Name="CrackAlgoBox" SelectedIndex="2">
+            <ComboBoxItem Content="MD5"/>
+            <ComboBoxItem Content="SHA1"/>
+            <ComboBoxItem Content="SHA256"/>
+            <ComboBoxItem Content="SHA512"/>
+          </ComboBox>
+          <TextBox Name="WordlistPathInput" Watermark="path to wordlist.txt"/>
+          <Button Content="Crack" Click="CrackBtn_Click"/>
+          <TextBox Name="CrackOutput" IsReadOnly="True"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="File integrity">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="FilePathInput" Watermark="path to file"/>
+          <ComboBox Name="FileAlgoBox" SelectedIndex="2">
+            <ComboBoxItem Content="MD5"/>
+            <ComboBoxItem Content="SHA1"/>
+            <ComboBoxItem Content="SHA256"/>
+            <ComboBoxItem Content="SHA512"/>
+          </ComboBox>
+          <Button Content="Compute checksum" Click="ChecksumBtn_Click"/>
+          <TextBox Name="ChecksumOutput" IsReadOnly="True"/>
+        </StackPanel>
+      </TabItem>
+    </TabControl>
+    </Border>
+  </StackPanel>
+</UserControl>

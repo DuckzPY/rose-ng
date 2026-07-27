@@ -1,0 +1,146 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:tc="using:Avalonia.Controls"
+        xmlns:core="using:RoseNG.Core"
+        x:Class="RoseNG.UI.MainWindow"
+        Title="rose-ng"
+        Width="1200" Height="780"
+        Background="#0D0B0F">
+
+  <Window.Styles>
+    <Style Selector="TextBlock.tileTitle">
+      <Setter Property="FontSize" Value="19"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="Foreground" Value="White"/>
+    </Style>
+    <Style Selector="TextBlock.tileSubtitle">
+      <Setter Property="FontSize" Value="12.5"/>
+      <Setter Property="Foreground" Value="#9C919A"/>
+    </Style>
+
+    <Style Selector="Button.tile">
+      <Setter Property="CornerRadius" Value="16"/>
+      <Setter Property="Background" Value="#17141A"/>
+      <Setter Property="BorderBrush" Value="#242028"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Padding" Value="22"/>
+      <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+      <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+      <Setter Property="RenderTransform" Value="scale(1)"/>
+      <Setter Property="Transitions">
+        <Transitions>
+          <BrushTransition Property="Background" Duration="0:0:0.18"/>
+          <BrushTransition Property="BorderBrush" Duration="0:0:0.18"/>
+          <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15"/>
+        </Transitions>
+      </Setter>
+    </Style>
+    <Style Selector="Button.tile:pointerover">
+      <Setter Property="Background" Value="#1D1920"/>
+      <Setter Property="BorderBrush" Value="#3A3038"/>
+      <Setter Property="RenderTransform" Value="scale(1.015)"/>
+    </Style>
+    <Style Selector="Button.tile:pressed">
+      <Setter Property="RenderTransform" Value="scale(0.985)"/>
+    </Style>
+
+    <Style Selector="Button.featured">
+      <Setter Property="CornerRadius" Value="16"/>
+      <Setter Property="Padding" Value="26"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="BorderBrush" Value="#4A1F28"/>
+      <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+      <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+      <Setter Property="RenderTransform" Value="scale(1)"/>
+      <Setter Property="Transitions">
+        <Transitions>
+          <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15"/>
+        </Transitions>
+      </Setter>
+      <Setter Property="Background">
+        <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+          <GradientStop Color="#421019" Offset="0"/>
+          <GradientStop Color="#190B0F" Offset="1"/>
+        </LinearGradientBrush>
+      </Setter>
+    </Style>
+    <Style Selector="Button.featured:pointerover">
+      <Setter Property="RenderTransform" Value="scale(1.01)"/>
+      <Setter Property="BorderBrush" Value="#6E2733"/>
+    </Style>
+    <Style Selector="Button.featured:pressed">
+      <Setter Property="RenderTransform" Value="scale(0.99)"/>
+    </Style>
+
+    <Style Selector="Border.badge">
+      <Setter Property="CornerRadius" Value="12"/>
+      <Setter Property="Background" Value="#361016"/>
+      <Setter Property="Padding" Value="10,5"/>
+    </Style>
+    <Style Selector="Button.backBtn">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="#B8AEB4"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="FontSize" Value="14"/>
+      <Setter Property="Padding" Value="4,4"/>
+    </Style>
+    <Style Selector="Button.backBtn:pointerover">
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style Selector="Button.searchResult">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="HorizontalAlignment" Value="Stretch"/>
+      <Setter Property="CornerRadius" Value="8"/>
+      <Setter Property="Padding" Value="10,8"/>
+      <Setter Property="Margin" Value="0,1"/>
+    </Style>
+    <Style Selector="Button.searchResult:pointerover">
+      <Setter Property="Background" Value="#26202A"/>
+      <Setter Property="RenderTransform" Value="scale(1)"/>
+    </Style>
+  </Window.Styles>
+
+  <Grid RowDefinitions="Auto,*" Margin="40">
+
+    <!-- Top bar -->
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*" Margin="0,0,0,28" Name="TopBar">
+      <TextBlock Grid.Column="0" Text="rose-ng" FontSize="28" FontWeight="Bold"
+                 Foreground="White" VerticalAlignment="Center"/>
+      <TextBox Grid.Column="1" Watermark="jump to a tool or paste a target..."
+               Margin="40,0,0,0" Height="46" CornerRadius="23"
+               Padding="20,0" VerticalContentAlignment="Center" Name="SearchBox"
+               KeyUp="SearchBox_KeyUp" TextChanged="SearchBox_TextChanged"
+               LostFocus="SearchBox_LostFocus"/>
+      <Popup Grid.Column="1" Name="SearchPopup" PlacementTarget="{Binding #SearchBox}"
+             Placement="Bottom" IsLightDismissEnabled="True" HorizontalOffset="40">
+        <Border Background="#1B171E" BorderBrush="#2E272F" BorderThickness="1"
+                CornerRadius="12" Padding="6" MinWidth="400">
+          <ItemsControl Name="SearchResults">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="core:SearchItem">
+                <Button Classes="searchResult" Click="SearchResultBtn_Click"
+                        Tag="{Binding}" HorizontalContentAlignment="Stretch">
+                  <Grid ColumnDefinitions="Auto,*">
+                    <Border Grid.Column="0" Background="#2A2430" CornerRadius="8"
+                            Padding="8,3" Margin="0,0,10,0">
+                      <TextBlock Text="{Binding Category}" FontSize="11" Foreground="#D89AA3"/>
+                    </Border>
+                    <TextBlock Grid.Column="1" Text="{Binding Tool}" VerticalAlignment="Center"/>
+                  </Grid>
+                </Button>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </Border>
+      </Popup>
+    </Grid>
+
+    <!-- Content host: crossfades between Home and a tool category view -->
+    <tc:TransitioningContentControl Grid.Row="1" Name="ContentHost"
+                                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                     HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+  </Grid>
+</Window>

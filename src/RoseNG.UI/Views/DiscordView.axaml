@@ -1,0 +1,82 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="RoseNG.UI.Views.DiscordView">
+  <StackPanel Spacing="16">
+    <TextBlock Text="Discord" Classes="pageTitle"/>
+    <Border CornerRadius="16" Background="#17141A" BorderBrush="#242028" BorderThickness="1" Padding="4">
+      <TabControl>
+      <TabItem Header="Webhook sender">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="WebhookUrlInput" Watermark="webhook URL"/>
+          <TextBox Name="WebhookMsgInput" Watermark="message content" AcceptsReturn="True" TextWrapping="Wrap" Height="80"/>
+          <Button Content="Send" Click="SendWebhookBtn_Click"/>
+          <TextBox Name="WebhookOutput" IsReadOnly="True"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Embed builder">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="EmbedWebhookInput" Watermark="webhook URL"/>
+          <TextBox Name="EmbedTitleInput" Watermark="embed title"/>
+          <TextBox Name="EmbedDescInput" Watermark="embed description" AcceptsReturn="True" TextWrapping="Wrap" Height="80"/>
+          <TextBox Name="EmbedColorInput" Watermark="#5865F2" Text="#5865F2"/>
+          <Button Content="Send embed" Click="SendEmbedBtn_Click"/>
+          <TextBox Name="EmbedOutput" IsReadOnly="True"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Snowflake decoder">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="SnowflakeInput" Watermark="123456789012345678"/>
+          <Button Content="Decode" Click="SnowflakeBtn_Click"/>
+          <TextBox Name="SnowflakeOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="100" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Token check (own bot only)">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="TokenInput" Watermark="your bot token" PasswordChar="*"/>
+          <Button Content="Validate format" Click="TokenFormatBtn_Click"/>
+          <Button Content="Check against Discord API" Click="TokenCheckBtn_Click"/>
+          <TextBox Name="TokenOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="260" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Invite resolver">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="InviteInput" Watermark="invite code (e.g. abcdef)"/>
+          <Button Content="Resolve" Click="InviteBtn_Click"/>
+          <TextBox Name="InviteOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="260" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Audit log (own server)">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="AuditGuildInput" Watermark="guild ID"/>
+          <TextBox Name="AuditTokenInput" Watermark="your bot token" PasswordChar="*"/>
+          <Button Content="Fetch audit log" Click="AuditBtn_Click"/>
+          <TextBox Name="AuditOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="320" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Webhook info">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="WhInfoUrlInput" Watermark="webhook URL"/>
+          <Button Content="Fetch info" Click="WhInfoBtn_Click"/>
+          <TextBox Name="WhInfoOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="220" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Emoji list (own server)">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="EmojiGuildInput" Watermark="guild ID"/>
+          <TextBox Name="EmojiTokenInput" Watermark="your bot token" PasswordChar="*"/>
+          <Button Content="List emojis" Click="EmojiBtn_Click"/>
+          <TextBox Name="EmojiOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="260" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Role list (own server)">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="RoleGuildInput" Watermark="guild ID"/>
+          <TextBox Name="RoleTokenInput" Watermark="your bot token" PasswordChar="*"/>
+          <Button Content="List roles" Click="RoleBtn_Click"/>
+          <TextBox Name="RoleOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="260" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+    </TabControl>
+    </Border>
+  </StackPanel>
+</UserControl>

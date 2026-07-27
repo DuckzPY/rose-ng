@@ -1,0 +1,82 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="RoseNG.UI.Views.OsintView">
+  <StackPanel Spacing="16">
+    <TextBlock Text="OSINT" Classes="pageTitle"/>
+
+    <Border CornerRadius="16" Background="#17141A" BorderBrush="#242028" BorderThickness="1" Padding="4">
+      <TabControl>
+      <TabItem Header="WHOIS">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="WhoisInput" Watermark="example.com"/>
+          <Button Name="WhoisBtn" Content="Lookup" Click="WhoisBtn_Click"/>
+          <TextBox Name="WhoisOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="220" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="DNS">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="DnsInput" Watermark="example.com"/>
+          <Button Name="DnsBtn" Content="Resolve" Click="DnsBtn_Click"/>
+          <TextBox Name="DnsOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="150" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="SSL">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="SslInput" Watermark="example.com"/>
+          <Button Name="SslBtn" Content="Inspect certificate" Click="SslBtn_Click"/>
+          <TextBox Name="SslOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="150" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Subnet calc">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="CidrInput" Watermark="192.168.1.0/24"/>
+          <Button Name="CidrBtn" Content="Calculate" Click="CidrBtn_Click"/>
+          <TextBox Name="CidrOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="150" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Reverse IP">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="RevIpInput" Watermark="8.8.8.8"/>
+          <Button Name="RevIpBtn" Content="Resolve PTR" Click="RevIpBtn_Click"/>
+          <TextBox Name="RevIpOutput" IsReadOnly="True"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Geolocation">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="GeoInput" Watermark="8.8.8.8"/>
+          <Button Name="GeoBtn" Content="Locate" Click="GeoBtn_Click"/>
+          <TextBox Name="GeoOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="260" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Username search">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="UserInput" Watermark="username"/>
+          <Button Name="UserBtn" Content="Search" Click="UserBtn_Click"/>
+          <TextBox Name="UserOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="150" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="ASN lookup">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="AsnInput" Watermark="8.8.8.8"/>
+          <Button Content="Lookup" Click="AsnBtn_Click"/>
+          <TextBox Name="AsnOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="220" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="robots.txt">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="RobotsInput" Watermark="example.com"/>
+          <Button Content="Fetch" Click="RobotsBtn_Click"/>
+          <TextBox Name="RobotsOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="200" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+      <TabItem Header="Wayback check">
+        <StackPanel Spacing="8" Margin="8">
+          <TextBox Name="WaybackInput" Watermark="https://example.com/page"/>
+          <Button Content="Check archive" Click="WaybackBtn_Click"/>
+          <TextBox Name="WaybackOutput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Height="220" FontFamily="monospace"/>
+        </StackPanel>
+      </TabItem>
+    </TabControl>
+    </Border>
+  </StackPanel>
+</UserControl>
