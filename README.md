@@ -78,7 +78,7 @@ Services/             all tool logic (no UI dependencies)
 Views/                one UserControl + tab set per category
 ```
 
-## Known stubs / left for you to finish
+## Known stubs/fixes
 
 - **Breach check** (OSINT) — needs a HaveIBeenPwned API key.
 - **MAC vendor lookup** (Network) — needs a bundled IEEE OUI database.
