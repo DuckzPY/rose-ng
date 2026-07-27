@@ -196,40 +196,6 @@ trivially portable.
 | Avalonia.Fonts.Inter | Bundled UI font so text renders consistently across OSes |
 | CommunityToolkit.Mvvm | Source-generated `ObservableObject`/`RelayCommand` for clean MVVM without boilerplate |
 
-**Languages used:** C# for both UI and backend logic, and Python for the
-tiny standalone `tools/regen-invite.py` maintenance script (not part of the
-shipped app). That's 2 of the 3 languages budgeted for this project, leaving
-room for a performance-critical component in a systems language later
-(e.g. Rust/Go) if a future tool genuinely needs it.
-
-## The support-link mechanism
-
-The app links to a Discord support/community server. Per your request, that
-invite URL is not stored as plain, greppable text in the repository:
-
-- The real URL lives only as an XOR-obfuscated byte array in
-  `RoseNG.Core/Security/Links.cs`.
-- `RoseNG.Core/Security/ObfuscatedString.cs` reverses the obfuscation **at
-  runtime only**, right before the link is opened.
-- To change the invite, run `python3 tools/regen-invite.py "<new-url>"` and
-  paste the printed byte array over the existing one in `Links.cs`. That's
-  the entire rotation process.
-
-**Please read this honestly:** this is *obfuscation*, not encryption. Any
-string shipped inside a public, unauthenticated binary can eventually be
-recovered by someone willing to attach a debugger or disassembler - there's
-no cryptographic scheme that changes that for a plain support-server invite,
-since the app itself must be able to decode it with no secret key of its
-own. What this approach *does* achieve, and the reason it's worth doing:
-- the literal invite text won't appear in `git log`, `grep -r`, or a casual
-  `strings RoseNG.exe`
-- automated scrapers crawling public GitHub repos for `discord.gg/...`
-  patterns won't pick it up
-- rotating it is a one-line change, not a re-plumbing of the codebase
-
-If you need real protection against invite scraping/raiding, pair this with
-Discord's own server-side controls (member screening, invite expiry, verification levels) - those provide actual security; this mechanism only provides discretion.
-
 ## Troubleshooting
 
 **"dotnet: command not found"** - Install the .NET 8 SDK from
